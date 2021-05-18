@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+   <Type Name="vtkPolyData">
+      <Expand>
+         <!--Inherited Items-->
+         <Item Name="vtkPointSet">(vtkPointSet*)this,nd</Item>
+         <Item Name="CellData">CellData</Item>
+         <Item Name="PointData">PointData</Item>
+         <Item Condition="Points != 0" Name="Points">Points</Item>
+         <!--Members-->
+         <Item Condition="Vertex != 0" Name="Vertex">Vertex</Item>
+         <Item Condition="PolyVertex != 0" Name="PolyVertex">PolyVertex</Item>
+         <Item Condition="Line != 0" Name="Line">Line</Item>
+         <Item Condition="PolyLine != 0" Name="PolyLine">PolyLine</Item>
+         <Item Condition="Triangle != 0" Name="Triangle">Triangle</Item>
+         <Item Condition="Quad != 0" Name="Quad">Quad</Item>
+         <Item Condition="Polygon != 0" Name="Polygon">Polygon</Item>
+         <Item Condition="TriangleStrip != 0" Name="TriangleStrip">TriangleStrip</Item>
+         <Item Condition="EmptyCell != 0" Name="EmptyCell">EmptyCell</Item>
+         <Item Condition="Verts != 0" Name="Verts">Verts</Item>
+         <Item Condition="Lines != 0" Name="Lines">Lines</Item>
+         <Item Condition="Polys != 0" Name="Polys">Polys</Item>
+         <Item Condition="Strips != 0" Name="Strips">Strips</Item>
+         <Item Condition="Cells != 0" Name="Cells">Cells</Item>
+         <Item Condition="Links != 0" Name="Links">Links</Item>
+      </Expand>
+   </Type>
+
+</AutoVisualizer>

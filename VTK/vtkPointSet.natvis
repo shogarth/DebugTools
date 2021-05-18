@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+   <Type Name="vtkPointSet">
+      <Expand>
+         <Item Name="vtkDataSet">(vtkDataSet*)this,nd</Item>
+         <Item Condition="Points != 0" Name="Points">Points</Item>
+         <Item Condition="Locator != 0" Name="Locator">Locator</Item>
+      </Expand>
+   </Type>
+
+
+</AutoVisualizer>

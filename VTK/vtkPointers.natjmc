@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<NonUserCode xmlns="http://schemas.microsoft.com/vstudio/debugger/jmc/2017">
+
+   <Function Name="vtkNew&lt;*" />
+   <Function Name="vtkSmartPointer&lt;*" />
+   
+   <!-- Schema:
+   
+   <- Modules ->
+   <Module Name="ModuleSpec" />
+   <Module Name="ModuleSpec" Company="CompanyName" />
+
+   <- Files ->
+   <File Name="FileSpec"/>
+
+   <- Functions ->
+   <Function Name="FunctionSpec" />
+   <Function Name="FunctionSpec" Module ="ModuleSpec" />
+   <Function Name="FunctionSpec" Module ="ModuleSpec" ExceptionImplementation="true" /> -->
+   
+   <!-- This file must be copied to <user>\Documents\Visual Studio 2017\Visualizers to filter out any calls you don't want to debug into.
+    When you copy this file for the first time, you'll need to restart VS. Once it's installed, you can usually, but not always, edit this without restarting VS.
+    For more info: Just My Code (https://msdn.microsoft.com/en-us/library/dn457346%28v=vs.120%29.aspx) and 
+    (https://docs.microsoft.com/en-us/visualstudio/debugger/just-my-code), (https://devblogs.microsoft.com/cppblog/announcing-jmc-stepping-in-visual-studio/)
+  -->
+</NonUserCode>

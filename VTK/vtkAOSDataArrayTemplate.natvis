@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+   <Type Name="vtkAOSDataArrayTemplate&lt;*&gt;">
+      <DisplayString>{{ name={Name} elements={(MaxId + 1)/NumberOfComponents} }}</DisplayString>
+      <Expand>
+         <Item Name="Name">Name</Item>
+         <Item Name="NumberOfComponents">NumberOfComponents</Item>
+         <ExpandedItem>MTime</ExpandedItem>
+         <Item Name="[elements]">(MaxId + 1)/NumberOfComponents</Item>
+         <Item Name="[size]">MaxId + 1</Item>
+         <Item Name="[capacity]">Buffer->Size</Item>
+         <ArrayItems Condition="NumberOfComponents == 1">
+            <Size>MaxId + 1</Size>
+            <ValuePointer>Buffer->Pointer</ValuePointer>
+         </ArrayItems>
+         <CustomListItems Condition="NumberOfComponents != 1">
+            <Variable Name="index" InitialValue="0" />
+            <Variable Name="cellSize" InitialValue="0" />
+
+            <Size>(MaxId + 1) / (NumberOfComponents)</Size>
+            <Loop>
+               <Item>(Buffer->Pointer + index), [NumberOfComponents]</Item>
+               <Exec>index = index + NumberOfComponents</Exec>
+            </Loop>
+         </CustomListItems>
+         <Synthetic Name="[Raw Values]" Condition="NumberOfComponents != 1">
+            <Expand>
+               <ArrayItems>
+                  <Size>MaxId + 1</Size>
+                  <ValuePointer>Buffer->Pointer</ValuePointer>
+               </ArrayItems>
+            </Expand>
+         </Synthetic>
+      </Expand>
+   </Type>
+
+</AutoVisualizer>

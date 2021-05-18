@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+   
+   <Type Name="vtkCellArray::Storage">
+      <Expand>
+         <Item Name="StorageIs64Bit">StorageIs64Bit</Item>
+         <ExpandedItem Condition="StorageIs64Bit == 0">Arrays.Int32</ExpandedItem>
+         <ExpandedItem Condition="StorageIs64Bit != 0">Arrays.Int64</ExpandedItem>
+      </Expand>
+   </Type>
+
+   <Type Name="vtkCellArray::VisitState&lt;vtkTypeInt32Array&gt;">
+      <Expand>
+         <Item Name="Number of Cells">((vtkAOSDataArrayTemplate&lt;int&gt;*)Offsets.Object)->Buffer->Size - 1</Item>
+
+         <CustomListItems>
+            <Variable Name="index" InitialValue="0" />
+            <Variable Name="pointMin" InitialValue="0" />
+            <Variable Name="pointMax" InitialValue="0" />
+
+            <Size>((vtkAOSDataArrayTemplate&lt;int&gt;*)Offsets.Object)->Buffer->Size - 1</Size>
+            <Loop>
+               <Exec>pointMin = *(((vtkAOSDataArrayTemplate&lt;int&gt;*)Offsets.Object)->Buffer->Pointer + index)</Exec>
+               <Exec>pointMax = *(((vtkAOSDataArrayTemplate&lt;int&gt;*)Offsets.Object)->Buffer->Pointer + index + 1)</Exec>
+               <Item>((vtkAOSDataArrayTemplate&lt;int&gt;*)Connectivity.Object)->Buffer->Pointer + pointMin, [pointMax - pointMin]</Item>
+               <Exec>index = index + 1</Exec>
+            </Loop>
+         </CustomListItems>
+      </Expand>
+   </Type>
+   
+   <Type Name="vtkCellArray::VisitState&lt;vtkTypeInt64Array&gt;">
+      <Expand>
+         <Item Name="Number of Cells">((vtkAOSDataArrayTemplate&lt;__int64&gt;*)Offsets.Object)->Buffer->Size - 1</Item>
+
+         <CustomListItems>
+            <Variable Name="index" InitialValue="0" />
+            <Variable Name="pointMin" InitialValue="0" />
+            <Variable Name="pointMax" InitialValue="0" />
+
+            <Size>((vtkAOSDataArrayTemplate&lt;__int64&gt;*)Offsets.Object)->Buffer->Size - 1</Size>
+            <Loop>
+               <Exec>pointMin = *(((vtkAOSDataArrayTemplate&lt;__int64&gt;*)Offsets.Object)->Buffer->Pointer + index)</Exec>
+               <Exec>pointMax = *(((vtkAOSDataArrayTemplate&lt;__int64&gt;*)Offsets.Object)->Buffer->Pointer + index + 1)</Exec>
+               <Item>((vtkAOSDataArrayTemplate&lt;__int64&gt;*)Connectivity.Object)->Buffer->Pointer + pointMin, [pointMax - pointMin]</Item>
+               <Exec>index = index + 1</Exec>
+            </Loop>
+         </CustomListItems>
+      </Expand>
+   </Type>
+
+</AutoVisualizer>

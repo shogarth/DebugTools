@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+   <!--
+   This file allows nice debugging into VTK DataTypes in Visual Studio
+   To Install, copy to: %userprofile%/Documents/Visual Studio 2017/Visualizers
+      After Installing, you will need to restart your debug session to pick up any changes.
+      If you make changes through VS, you can edit this file live while stopped on a breakpoint.
+   
+   For Further Reference: 
+      - https://docs.microsoft.com/en-us/visualstudio/debugger/create-custom-views-of-native-objects?view=vs-2019
+      - https://docs.microsoft.com/en-us/visualstudio/debugger/format-specifiers-in-cpp?view=vs-2019
+   -->
+
+   <Type Name="vtkNew&lt;*&gt;">
+		<AlternativeType Name="vtkSmartPointer&lt;*&gt;"/>
+	
+		<SmartPointer Usage="Minimal">Object</SmartPointer>
+      <DisplayString IncludeView="ptr" Condition="Object == 0">nullptr</DisplayString>
+      <DisplayString IncludeView="ptr" Condition="Object != 0">{*Object}</DisplayString>
+      <Expand>
+         <ExpandedItem Condition="Object != 0">*Object</ExpandedItem>
+      </Expand>
+   </Type>
+
+</AutoVisualizer>
