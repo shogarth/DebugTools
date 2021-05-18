@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<NonUserCode xmlns="http://schemas.microsoft.com/vstudio/debugger/jmc/2017">
+
+   <Function Name="std::basic_string&lt;*" />
+   <Function Name="std::shared_ptr&lt;*" />
+   <Function Name="std::tuple&lt;*" />
+   <Function Name="std::unique_ptr&lt;*" />
+   <Function Name="std::vector&lt;*" />
+   <Function Name="std::_Func_base&lt;*" />
+   
+   <Function Name="nonstd::observer_ptr&lt;*" />
+
+</NonUserCode>

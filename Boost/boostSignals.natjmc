@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<NonUserCode xmlns="http://schemas.microsoft.com/vstudio/debugger/jmc/2017">
+
+   <!--<Function Name="boost::*" />-->
+   <Function Name="boost::aligned_storage&lt;*" />
+   <Function Name="boost::_bi::*" />
+   <Function Name="boost::_mfi::*" />
+   <Function Name="boost::detail::*" />
+   <Function Name="boost::function_base::*" />
+   <Function Name="boost::function0&lt;*" />
+   <Function Name="boost::function1&lt;*" />
+   <Function Name="boost::function2&lt;*" />
+   <Function Name="boost::function3&lt;*" />
+   <Function Name="boost::function4&lt;*" />
+   <Function Name="boost::function5&lt;*" />
+   <Function Name="boost::function6&lt;*" />
+   <Function Name="boost::function7&lt;*" />
+   <Function Name="boost::function8&lt;*" />
+   <Function Name="boost::function9&lt;*" />
+   <Function Name="boost::iterators::*" />
+   <Function Name="boost::integral_constant&lt;*" />
+   <Function Name="boost::optional&lt;*" />
+   <Function Name="boost::optional_detail::*" />
+   <Function Name="boost::shared_ptr&lt;*" />
+   <Function Name="boost::signals2::*" />
+   <Function Name="boost::signals2::signal&lt;*" />
+   <Function Name="boost::weak_ptr&lt;*" />
+   
+   <Function Name="boostextensions::signals2::*" />
+
+</NonUserCode>
