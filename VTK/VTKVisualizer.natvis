@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+   <!--
+   This file allows nice debugging into VTK DataTypes in Visual Studio
+   To Install, copy to: %userprofile%/Documents/Visual Studio 2017/Visualizers
+      After Installing, you will need to restart your debug session to pick up any changes.
+      If you make changes through VS, you can edit this file live while stopped on a breakpoint.
+   
+   For Further Reference: 
+      - https://docs.microsoft.com/en-us/visualstudio/debugger/create-custom-views-of-native-objects?view=vs-2019
+      - https://docs.microsoft.com/en-us/visualstudio/debugger/format-specifiers-in-cpp?view=vs-2019
+   -->
+
+   <Type Name="vtkAOSDataArrayTemplate&lt;*&gt;">
+      <DisplayString>{{ name={Name} elements={(MaxId + 1)/NumberOfComponents} }}</DisplayString>
+      <Expand>
+         <Item Name="Name">Name</Item>
+         <Item Name="NumberOfComponents">NumberOfComponents</Item>
+         <ExpandedItem>MTime</ExpandedItem>
+         <Item Name="[elements]">(MaxId + 1)/NumberOfComponents</Item>
+         <Item Name="[size]">MaxId + 1</Item>
+         <Item Name="[capacity]">Buffer->Size</Item>
+         <ArrayItems Condition="NumberOfComponents == 1">
+            <Size>MaxId + 1</Size>
+            <ValuePointer>Buffer->Pointer</ValuePointer>
+         </ArrayItems>
+         <CustomListItems Condition="NumberOfComponents != 1">
+            <Variable Name="index" InitialValue="0" />
+            <Variable Name="cellSize" InitialValue="0" />
+
+            <Size>(MaxId + 1) / (NumberOfComponents)</Size>
+            <Loop>
+               <Item>(Buffer->Pointer + index), [NumberOfComponents]</Item>
+               <Exec>index = index + NumberOfComponents</Exec>
+            </Loop>
+         </CustomListItems>
+         <Synthetic Name="Raw Values" Condition="NumberOfComponents != 1">
+            <Expand>
+               <ArrayItems>
+                  <Size>MaxId + 1</Size>
+                  <ValuePointer>Buffer->Pointer</ValuePointer>
+               </ArrayItems>
+            </Expand>
+         </Synthetic>
+      </Expand>
+   </Type>
+
+   
+   <Type Name="vtkBuffer&lt;*&gt;">
+      <DisplayString>{{ size={Size} }}</DisplayString>
+      <Expand>
+         <Item Name="MTime">MTime</Item>
+         <Item Name="[capacity]" ExcludeView="simple">Size</Item>
+         <ArrayItems>
+            <Size>Size</Size>
+            <ValuePointer>Pointer</ValuePointer>
+         </ArrayItems>
+      </Expand>
+   </Type>
+
+
+   <Type Name="vtkCellArray">
+      <DisplayString>{{ NumberOfCells={NumberOfCells} }}</DisplayString>
+      <Expand>
+         <Item Name="NumberOfCells">NumberOfCells</Item>
+         <Synthetic Name="[cells]">
+            <Expand>
+               <CustomListItems>
+                  <Variable Name="index" InitialValue="0" />
+                  <Variable Name="cellSize" InitialValue="0" />
+
+                  <Size>NumberOfCells</Size>
+                  <Loop>
+                     <Exec>cellSize = *(Ia->Buffer->Pointer + index)</Exec>
+                     <Item>(Ia->Buffer->Pointer + index) + 1, [cellSize]</Item>
+                     <Exec>index = index + cellSize + 1</Exec>
+                  </Loop>
+               </CustomListItems>
+            </Expand>
+         </Synthetic>
+         <Item Name="[values]">*Ia</Item>
+      </Expand>
+   </Type>
+
+   
+   <Type Name="vtkFieldData">
+      <Expand>
+         <Item Name="NumberOfArrays">NumberOfArrays</Item>
+         <ArrayItems>
+            <Size>NumberOfArrays</Size>
+            <ValuePointer>Data</ValuePointer>
+         </ArrayItems>
+      </Expand>
+   </Type>
+
+
+   <Type Name="vtkPoints">
+      <DisplayString>{{ name={Data->Name} elements={(Data->MaxId + 1)/Data->NumberOfComponents} }}</DisplayString>
+      <Expand>
+         <ExpandedItem>Data</ExpandedItem>
+      </Expand>
+   </Type>
+   
+   
+   <Type Name="vtkPointSet">
+      <Expand>
+         <Item Name="vtkDataSet">(vtkDataSet*)this,nd</Item>
+         <Item Condition="Points != 0" Name="Points">Points</Item>
+         <Item Condition="Locator != 0" Name="Locator">Locator</Item>
+      </Expand>
+   </Type>
+
+
+   <Type Name="vtkPolyData">
+      <Expand>
+         <!--Inherited Items-->
+         <Item Name="vtkPointSet">(vtkPointSet*)this,nd</Item>
+         <Item Name="CellData">CellData</Item>
+         <Item Name="PointData">PointData</Item>
+         <Item Condition="Points != 0" Name="Points">Points</Item>
+         <!--Members-->
+         <Item Condition="Vertex != 0" Name="Vertex">Vertex</Item>
+         <Item Condition="PolyVertex != 0" Name="PolyVertex">PolyVertex</Item>
+         <Item Condition="Line != 0" Name="Line">Line</Item>
+         <Item Condition="PolyLine != 0" Name="PolyLine">PolyLine</Item>
+         <Item Condition="Triangle != 0" Name="Triangle">Triangle</Item>
+         <Item Condition="Quad != 0" Name="Quad">Quad</Item>
+         <Item Condition="Polygon != 0" Name="Polygon">Polygon</Item>
+         <Item Condition="TriangleStrip != 0" Name="TriangleStrip">TriangleStrip</Item>
+         <Item Condition="EmptyCell != 0" Name="EmptyCell">EmptyCell</Item>
+         <Item Condition="Verts != 0" Name="Verts">Verts</Item>
+         <Item Condition="Lines != 0" Name="Lines">Lines</Item>
+         <Item Condition="Polys != 0" Name="Polys">Polys</Item>
+         <Item Condition="Strips != 0" Name="Strips">Strips</Item>
+         <Item Condition="Cells != 0" Name="Cells">Cells</Item>
+         <Item Condition="Links != 0" Name="Links">Links</Item>
+      </Expand>
+   </Type>
+
+
+   <Type Name="vtkSmartPointer&lt;*&gt;">
+      <SmartPointer Usage="Minimal">Object</SmartPointer>
+      <DisplayString IncludeView="ptr" Condition="Object == 0">nullptr</DisplayString>
+      <DisplayString IncludeView="ptr" Condition="Object != 0">{*Object}</DisplayString>
+      <Expand>
+         <ExpandedItem Condition="Object != 0">*Object</ExpandedItem>
+      </Expand>
+   </Type>
+
+
+   <Type Name="vtkTimeStamp">
+      <DisplayString>{{ ModifiedTime={ModifiedTime} }}</DisplayString>
+      <Expand>
+         <Item Name="ModifiedTime">ModifiedTime</Item>
+      </Expand>
+   </Type>
+
+   
+   <Type Name="vtkUnstructuredGrid">
+      <Expand>
+         <Item Name="vtkPointSet">(vtkPointSet*)this,nd</Item>
+         <Item Name="CellData">CellData</Item>
+         <Item Name="PointData">PointData</Item>
+
+         <Item Name="Bounds">Bounds</Item>
+         <Item Name="Center">Center</Item>
+         <Synthetic Name="[stats]">
+            <Expand>
+               <Item Name="DataObserver">DataObserver</Item>
+               <Item Name="ComputeTime">ComputeTime</Item>
+               <Item Name="ScalarRange">ScalarRange</Item>
+               <Item Name="ScalarRangeComputeTime">ScalarRangeComputeTime</Item>
+               <Item Name="PointGhostArray">PointGhostArray</Item>
+               <Item Name="CellGhostArray">CellGhostArray</Item>
+               <Item Name="PointGhostArrayCached">PointGhostArrayCached</Item>
+               <Item Name="CellGhostArrayCached">CellGhostArrayCached</Item>
+            </Expand>
+         </Synthetic>
+
+         <Item Condition="Vertex != 0" Name="Vertex">Vertex</Item>
+         <Item Condition="PolyVertex != 0" Name="PolyVertex">PolyVertex</Item>
+         <Item Condition="LagrangeCurve != 0" Name="LagrangeCurve">LagrangeCurve</Item>
+         <Item Condition="LagrangeQuadrilateral != 0" Name="LagrangeQuadrilateral">LagrangeQuadrilateral</Item>
+         <Item Condition="LagrangeHexahedron != 0" Name="LagrangeHexahedron">LagrangeHexahedron</Item>
+         <Item Condition="LagrangeTriangle != 0" Name="LagrangeTriangle">LagrangeTriangle</Item>
+         <Item Condition="LagrangeTetra != 0" Name="LagrangeTetra">LagrangeTetra</Item>
+         <Item Condition="LagrangeWedge != 0" Name="LagrangeWedge">LagrangeWedge</Item>
+         <Item Condition="Line != 0" Name="Line">Line</Item>
+         <Item Condition="PolyLine != 0" Name="PolyLine">PolyLine</Item>
+         <Item Condition="Triangle != 0" Name="Triangle">Triangle</Item>
+         <Item Condition="TriangleStrip != 0" Name="TriangleStrip">TriangleStrip</Item>
+         <Item Condition="Pixel != 0" Name="Pixel">Pixel</Item>
+         <Item Condition="Quad != 0" Name="Quad">Quad</Item>
+         <Item Condition="Polygon != 0" Name="Polygon">Polygon</Item>
+         <Item Condition="Tetra != 0" Name="Tetra">Tetra</Item>
+         <Item Condition="Voxel != 0" Name="Voxel">Voxel</Item>
+         <Item Condition="Hexahedron != 0" Name="Hexahedron">Hexahedron</Item>
+         <Item Condition="Wedge != 0" Name="Wedge">Wedge</Item>
+         <Item Condition="Pyramid != 0" Name="Pyramid">Pyramid</Item>
+         <Item Condition="PentagonalPrism != 0" Name="PentagonalPrism">PentagonalPrism</Item>
+         <Item Condition="HexagonalPrism != 0" Name="HexagonalPrism">HexagonalPrism</Item>
+         <Item Condition="QuadraticEdge != 0" Name="QuadraticEdge">QuadraticEdge</Item>
+         <Item Condition="QuadraticTriangle != 0" Name="QuadraticTriangle">QuadraticTriangle</Item>
+         <Item Condition="QuadraticQuad != 0" Name="QuadraticQuad">QuadraticQuad</Item>
+         <Item Condition="QuadraticPolygon != 0" Name="QuadraticPolygon">QuadraticPolygon</Item>
+         <Item Condition="QuadraticTetra != 0" Name="QuadraticTetra">QuadraticTetra</Item>
+         <Item Condition="QuadraticHexahedron != 0" Name="QuadraticHexahedron">QuadraticHexahedron</Item>
+         <Item Condition="QuadraticWedge != 0" Name="QuadraticWedge">QuadraticWedge</Item>
+         <Item Condition="QuadraticPyramid != 0" Name="QuadraticPyramid">QuadraticPyramid</Item>
+         <Item Condition="QuadraticLinearQuad != 0" Name="QuadraticLinearQuad">QuadraticLinearQuad</Item>
+         <Item Condition="BiQuadraticQuad != 0" Name="BiQuadraticQuad">BiQuadraticQuad</Item>
+         <Item Condition="TriQuadraticHexahedron != 0" Name="TriQuadraticHexahedron">TriQuadraticHexahedron</Item>
+         <Item Condition="QuadraticLinearWedge != 0" Name="QuadraticLinearWedge">QuadraticLinearWedge</Item>
+         <Item Condition="BiQuadraticQuadraticWedge != 0" Name="BiQuadraticQuadraticWedge">BiQuadraticQuadraticWedge</Item>
+         <Item Condition="BiQuadraticQuadraticHexahedron != 0" Name="BiQuadraticQuadraticHexahedron">BiQuadraticQuadraticHexahedron</Item>
+         <Item Condition="BiQuadraticTriangle != 0" Name="BiQuadraticTriangle">BiQuadraticTriangle</Item>
+         <Item Condition="CubicLine != 0" Name="CubicLine">CubicLine</Item>
+         <Item Condition="ConvexPointSet != 0" Name="ConvexPointSet">ConvexPointSet</Item>
+         <Item Condition="Polyhedron != 0" Name="Polyhedron">Polyhedron</Item>
+         <Item Condition="EmptyCell != 0" Name="EmptyCell">EmptyCell</Item>
+         <Item Condition="Connectivity != 0" Name="Connectivity">Connectivity</Item>
+         <Item Condition="Links != 0" Name="Links">Links</Item>
+         <Item Condition="Types != 0" Name="Types">Types</Item>
+         <Item Condition="Locations != 0" Name="Locations">Locations</Item>
+         <Item Condition="Faces != 0" Name="Faces">Faces</Item>
+         <Item Condition="FaceLocations != 0" Name="FaceLocations">FaceLocations</Item>
+      </Expand>
+   </Type>
+
+</AutoVisualizer>
